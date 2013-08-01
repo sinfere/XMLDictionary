@@ -297,11 +297,13 @@
     NSMutableDictionary *top = [_stack lastObject];
 	if (_collapseTextNodes &&
 		!top.attributes && !top.childNodes &&
-        !top.comments && top.innerText)
+        !top.comments)
+        // !top.comments && top.innerText)
 	{
 		[_stack removeLastObject];
         NSMutableDictionary *newTop = [_stack lastObject];
 		NSString *nodeName = [self nameForNode:top inDictionary:newTop];
+        NSLog(@"-> %@", nodeName);
 		if (nodeName)
 		{
 			id parentNode = newTop[nodeName];
@@ -311,7 +313,7 @@
 			}
 			else
 			{
-				newTop[nodeName] = top.innerText;
+				newTop[nodeName] = top.innerText ? top.innerText : @"";
 			}
 		}
 	}
